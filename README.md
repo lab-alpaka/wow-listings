@@ -7,7 +7,7 @@ Statische GitHub-Pages-Seite zur Verwaltung deiner Schmiedekunst-Rezepte (Classi
 - Kategorien als Kacheln: **Waffen**, **Rüstung**, **Materialien**
 - Status pro Rezept: **gelernt (grün)** / **nicht gelernt (grau)**
 - Hover-/Fokus-Effekt: aktive Karte wird heller
-- Filter: Suche, Status, Quelle, **Kategorie (Waffen/Materialien/Rüstung)**, **Art**
+- Filter: Suche, Status, Quelle, **Art**
 - Wowhead-Item-Link pro Rezept
 - Zusätzliche Metadaten: **Min. Lvl**, **Item Slot**, **Quelle**, **Art**
 - Standard-Sortierung: **Min. Stufe absteigend** (höchste zuerst)
