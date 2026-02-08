@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WoW Classic – Schmiedekunst Rezepte</title>
+    <link rel="stylesheet" href="assets/styles.css" />
+  </head>
+  <body>
+    <header class="container">
+      <h1>WoW Classic Era – Schmiedekunst</h1>
+      <p class="subtitle">Rezeptübersicht mit Lernstatus, Quelle und Wowhead-Links.</p>
+
+      <section class="toolbar" aria-label="Filter und Aktionen">
+        <label>
+          Suche
+          <input id="searchInput" type="search" placeholder="z. B. Bronzene" />
+        </label>
+
+        <label>
+          Status
+          <select id="statusFilter">
+            <option value="all">Alle</option>
+            <option value="learned">Gelernt</option>
+            <option value="unlearned">Nicht gelernt</option>
+          </select>
+        </label>
+
+        <label>
+          Quelle
+          <select id="sourceFilter">
+            <option value="all">Alle</option>
+          </select>
+        </label>
+
+        <label>
+          Kategorie
+          <select id="categoryFilter">
+            <option value="all">Alle</option>
+            <option value="Waffen">Waffen</option>
+            <option value="Materialien">Materialien</option>
+            <option value="Rüstung">Rüstung</option>
+          </select>
+        </label>
+
+        <label>
+          Art
+          <select id="typeFilter">
+            <option value="all">Alle</option>
+          </select>
+        </label>
+
+        <label>
+          Sortierung
+          <select id="sortBy">
+            <option value="itemLevelDesc">Item Lvl (absteigend)</option>
+            <option value="name">Name (A–Z)</option>
+          </select>
+        </label>
+
+        <div class="actions">
+          <button id="exportBtn" type="button">learned.json exportieren</button>
+        </div>
+      </section>
+
+      <p id="summary" class="summary"></p>
+      <p class="hint">Hinweis: Änderungen werden lokal gespeichert. Für GitHub Pages bitte exportieren und nach <code>data/learned.json</code> committen.</p>
+    </header>
+
+    <main id="categories" class="container grid" aria-live="polite"></main>
+
+    <template id="recipeTemplate">
+      <article class="recipe-card" tabindex="0">
+        <label class="recipe-header">
+          <input class="learned-checkbox" type="checkbox" />
+          <span class="recipe-name"></span>
+        </label>
+        <p class="meta">
+          <span class="min-level"></span>
+          <span class="slot"></span>
+          <span class="type"></span>
+          <span class="source"></span>
+        </p>
+        <a class="wowhead-link" target="_blank" rel="noopener noreferrer">Bei Wowhead öffnen</a>
+      </article>
+    </template>
+
+    <script src="assets/app.js" defer></script>
+  </body>
+</html>
