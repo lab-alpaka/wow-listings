@@ -106,9 +106,19 @@ function render() {
   });
 
   filtered.sort((a, b) => {
-    if (sortBy.value === 'itemLevelDesc') {
-      return (b.minLevel ?? -1) - (a.minLevel ?? -1) || a.name.localeCompare(b.name, 'de');
+    const aLevel = a.minLevel ?? Number.POSITIVE_INFINITY;
+    const bLevel = b.minLevel ?? Number.POSITIVE_INFINITY;
+
+    if (sortBy.value === 'minLevelDesc') {
+      const aDesc = a.minLevel ?? Number.NEGATIVE_INFINITY;
+      const bDesc = b.minLevel ?? Number.NEGATIVE_INFINITY;
+      return bDesc - aDesc || a.name.localeCompare(b.name, 'de');
     }
+
+    if (sortBy.value === 'minLevelAsc') {
+      return aLevel - bLevel || a.name.localeCompare(b.name, 'de');
+    }
+
     return a.name.localeCompare(b.name, 'de');
   });
 
@@ -133,7 +143,7 @@ function render() {
       node.classList.toggle('learned', isLearned);
       node.querySelector('.learned-checkbox').checked = isLearned;
       node.querySelector('.recipe-name').textContent = recipe.name;
-      node.querySelector('.min-level').textContent = `Item Lvl: ${recipe.minLevel ?? '–'}`;
+      node.querySelector('.min-level').textContent = `Min. Stufe: ${recipe.minLevel ?? '–'}`;
       node.querySelector('.slot').textContent = `Slot: ${recipe.slot ?? '–'}`;
       node.querySelector('.type').textContent = `Art: ${recipe.type ?? '–'}`;
       node.querySelector('.source').textContent = recipe.source;

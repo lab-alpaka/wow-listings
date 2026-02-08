@@ -10,7 +10,7 @@ Statische GitHub-Pages-Seite zur Verwaltung deiner Schmiedekunst-Rezepte (Classi
 - Filter: Suche, Status, Quelle, **Kategorie (Waffen/Materialien/Rüstung)**, **Art**
 - Wowhead-Item-Link pro Rezept
 - Zusätzliche Metadaten: **Min. Lvl**, **Item Slot**, **Quelle**, **Art**
-- Standard-Sortierung: **Item Lvl absteigend** (höchste zuerst)
+- Standard-Sortierung: **Min. Stufe absteigend** (höchste zuerst)
 - Export von `learned.json` für Commit ins Repo
 
 ## Empfohlener Workflow (GitHub)
@@ -23,7 +23,7 @@ Statische GitHub-Pages-Seite zur Verwaltung deiner Schmiedekunst-Rezepte (Classi
 ## Nächste sinnvolle Schritte
 
 1. **Echte Rezeptliste importieren**
-   - Daten in `data/recipes.json` eintragen (Name, Item-ID/Link, Skill, Quelle, Kategorie).
+   - Daten in `data/recipes.json` eintragen (Name, Item-ID/Link, Min. Stufe, Quelle, Kategorie).
 2. **Datenpflege vereinfachen**
    - Optional: kleines Skript ergänzen, das CSV -> `recipes.json` konvertiert.
 3. **Qualitätssicherung**
