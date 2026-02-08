@@ -3,6 +3,8 @@ const template = document.getElementById('recipeTemplate');
 const searchInput = document.getElementById('searchInput');
 const statusFilter = document.getElementById('statusFilter');
 const sourceFilter = document.getElementById('sourceFilter');
+const categoryFilter = document.getElementById('categoryFilter');
+const typeFilter = document.getElementById('typeFilter');
 const sortBy = document.getElementById('sortBy');
 const exportBtn = document.getElementById('exportBtn');
 const summary = document.getElementById('summary');
@@ -26,14 +28,20 @@ async function init() {
   learnedIds = new Set([...learnedFile.learned, ...localLearned]);
 
   populateSourceFilter(recipes);
+  populateTypeFilter(recipes, 'all');
   bindEvents();
   render();
 }
 
 function bindEvents() {
-  [searchInput, statusFilter, sourceFilter, sortBy].forEach((el) => {
+  [searchInput, statusFilter, sourceFilter, categoryFilter, typeFilter, sortBy].forEach((el) => {
     el.addEventListener('input', render);
     el.addEventListener('change', render);
+  });
+
+  categoryFilter.addEventListener('change', () => {
+    populateTypeFilter(recipes, categoryFilter.value);
+    render();
   });
 
   exportBtn.addEventListener('click', () => {
@@ -57,10 +65,34 @@ function populateSourceFilter(items) {
   }
 }
 
+function populateTypeFilter(items, category) {
+  const current = typeFilter.value;
+  typeFilter.innerHTML = '';
+
+  const allOption = document.createElement('option');
+  allOption.value = 'all';
+  allOption.textContent = 'Alle';
+  typeFilter.append(allOption);
+
+  const inCategory = category === 'all' ? items : items.filter((r) => r.category === category);
+  const types = [...new Set(inCategory.map((r) => r.type).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'de'));
+
+  for (const type of types) {
+    const option = document.createElement('option');
+    option.value = type;
+    option.textContent = type;
+    typeFilter.append(option);
+  }
+
+  typeFilter.value = types.includes(current) ? current : 'all';
+}
+
 function render() {
   const term = searchInput.value.trim().toLowerCase();
   const status = statusFilter.value;
   const source = sourceFilter.value;
+  const category = categoryFilter.value;
+  const type = typeFilter.value;
 
   let filtered = recipes.filter((r) => {
     const isLearned = learnedIds.has(r.id);
@@ -68,13 +100,25 @@ function render() {
     if (status === 'learned' && !isLearned) return false;
     if (status === 'unlearned' && isLearned) return false;
     if (source !== 'all' && r.source !== source) return false;
+    if (category !== 'all' && r.category !== category) return false;
+    if (type !== 'all' && r.type !== type) return false;
     return true;
   });
 
   filtered.sort((a, b) => {
-    if (sortBy.value === 'skill') {
-      return (a.skill ?? 9999) - (b.skill ?? 9999) || a.name.localeCompare(b.name, 'de');
+    const aLevel = a.minLevel ?? Number.POSITIVE_INFINITY;
+    const bLevel = b.minLevel ?? Number.POSITIVE_INFINITY;
+
+    if (sortBy.value === 'minLevelDesc') {
+      const aDesc = a.minLevel ?? Number.NEGATIVE_INFINITY;
+      const bDesc = b.minLevel ?? Number.NEGATIVE_INFINITY;
+      return bDesc - aDesc || a.name.localeCompare(b.name, 'de');
     }
+
+    if (sortBy.value === 'minLevelAsc') {
+      return aLevel - bLevel || a.name.localeCompare(b.name, 'de');
+    }
+
     return a.name.localeCompare(b.name, 'de');
   });
 
@@ -99,7 +143,7 @@ function render() {
       node.classList.toggle('learned', isLearned);
       node.querySelector('.learned-checkbox').checked = isLearned;
       node.querySelector('.recipe-name').textContent = recipe.name;
-      node.querySelector('.min-level').textContent = `Min. Lvl: ${recipe.minLevel ?? '–'}`;
+      node.querySelector('.min-level').textContent = `Min. Stufe: ${recipe.minLevel ?? '–'}`;
       node.querySelector('.slot').textContent = `Slot: ${recipe.slot ?? '–'}`;
       node.querySelector('.type').textContent = `Art: ${recipe.type ?? '–'}`;
       node.querySelector('.source').textContent = recipe.source;
